@@ -5,6 +5,8 @@ function draw() {
     const demoTime = getTime() * bpm / 60
 
     textFont('Londrina Solid')
+    colorMode(HSL) // Hue (0..360), Saturation (0..100), Lightness (0..100)
+
 
     if (demoTime === 0) {
         instructionsScene(demoTime)
@@ -48,10 +50,10 @@ function draw() {
 
 
 function instructionsScene(sceneTime) {
-    background('hsl(35, 100%, 50%)') // orange
+    background(35, 100, 50) // orange
     textAlign(CENTER, CENTER)
     textSize(64)
-    fill(0)
+    fill(0, 0, 0) // black
     noStroke()
     text('Press F to go fullscreen and space to start', width/2, height/2)
 }
@@ -59,16 +61,16 @@ function instructionsScene(sceneTime) {
 
 
 function stickScene(sceneTime) {
-    background('hsl(35, 100%, 50%)') // orange
+    background(35, 100, 50) // orange
 
     translate(width/2, height/2)
 
-    fill(0)
+    fill(0, 0, 0) // black
     noStroke()
     // https://www.w3schools.com/jsref/jsref_tofixed.asp
     text(sceneTime.toFixed(2), 0, 0)
 
-    stroke(0)
+    stroke(0, 0, 0) // black
     strokeWeight(10)
 
     // https://p5js.org/reference/#/p5/rotate
@@ -79,11 +81,11 @@ function stickScene(sceneTime) {
 
 
 function ballScene(sceneTime) {
-    background('hsl(210, 100%, 50%)') // blue
+    background(210, 100, 50) // blue
 
     translate(width/2, height/2)
 
-    fill(255)
+    fill(0, 0, 100) // white
     noStroke()
 
     text(sceneTime.toFixed(2), 0, 0)
@@ -99,11 +101,11 @@ function ballScene(sceneTime) {
 
 
 function squareScene(sceneTime) {
-    background('hsl(340, 100%, 50%)') // purple
+    background(340, 100, 50) // purple
 
     translate(width/2, height/2)
 
-    stroke(255)
+    stroke(0, 0, 100) // white
     strokeWeight(10)
     noFill()
 
@@ -120,7 +122,7 @@ function squareScene(sceneTime) {
 
 
 function noiseScene(sceneTime) {
-    background('hsl(130, 50%, 50%)') // green
+    background(130, 50, 50) // green
 
     fill(255)
     noStroke()
