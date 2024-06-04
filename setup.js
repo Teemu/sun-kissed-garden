@@ -1,8 +1,8 @@
-function now () {
+function now() {
     return Date.now() / 1000
 }
 
-let startTime = null
+let startTime = now()
 let demoTime = 0
 let paused = true
 
@@ -27,6 +27,15 @@ window.addEventListener('keydown', (event) => {
             paused = true
             demoTime = now() - startTime
             noLoop()
+        }
+    }
+
+    // 0 = Reset time
+    if (event.key === '0') {
+        startTime = now()
+        demoTime = 0
+        if (paused) {
+            redraw()
         }
     }
 })
