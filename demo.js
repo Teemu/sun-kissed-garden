@@ -1,19 +1,14 @@
 function draw() {
-    const demoTime = getTime()
+    const bpm = 128
+    const demoTime = getTime() * bpm / 60
 
     textFont('Londrina Solid')
 
     if (demoTime === 0) {
         instructionsScene(demoTime)
 
-    } else if (demoTime < 1) {
-        stickScene(demoTime)
-
     } else if (demoTime < 2) {
-        ballScene(demoTime)
-
-    } else if (demoTime < 3) {
-        stickScene(demoTime - 2)
+        stickScene(demoTime)
 
     } else if (demoTime < 4) {
         ballScene(demoTime)
@@ -24,8 +19,14 @@ function draw() {
     } else if (demoTime < 8) {
         ballScene(demoTime)
 
-    } else if (demoTime < 10) {
+    } else if (demoTime < 12) {
         stickScene(demoTime - 8)
+
+    } else if (demoTime < 16) {
+        ballScene(demoTime)
+
+    } else if (demoTime < 20) {
+        stickScene(demoTime - 16)
 
     } else {
         endDemo()
@@ -63,5 +64,8 @@ function ballScene(sceneTime) {
     text(sceneTime.toFixed(2), 0, 0)
 
     rotate(sceneTime)
-    ellipse(0, 200, 50, 50)
+
+    const bump = sceneTime - Math.floor(sceneTime)
+    const radius = map(bump, 0, 1, 0, 100)
+    ellipse(0, 200, radius, radius)
 }
