@@ -28,6 +28,9 @@ function draw() {
     } else if (demoTime < 20) {
         stickScene(demoTime - 16)
 
+    } else if (demoTime < 24) {
+        ballScene(demoTime)
+
     } else {
         endDemo()
 
