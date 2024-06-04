@@ -1,3 +1,5 @@
+audioPlayer = document.querySelector('#song')
+
 function draw() {
     const bpm = 132
     const demoTime = getTime() * bpm / 60
