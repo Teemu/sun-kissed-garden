@@ -6,6 +6,22 @@ let startTime = now()
 let demoTime = 0
 let paused = true
 
+function getTime() {
+    if (paused) {
+        return demoTime
+    } else {
+        return now() - startTime
+    }
+}
+
+function endDemo() {
+    paused = true
+    demoTime = 0
+    if (document.fullscreenElement) {
+        document.exitFullscreen()
+    }
+}
+
 window.addEventListener('keydown', (event) => {
     // F = Toggle fullscreen
     if (event.key === 'f') {
@@ -38,6 +54,10 @@ window.addEventListener('keydown', (event) => {
             redraw()
         }
     }
+})
+
+document.fonts.ready.then(() => {
+    redraw()
 })
 
 function setup() {
