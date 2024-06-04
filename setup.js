@@ -7,7 +7,7 @@ let demoTime = 0
 let paused = true
 
 window.addEventListener('keydown', (event) => {
-    // F = toggle fullscreen
+    // F = Toggle fullscreen
     if (event.key === 'f') {
         let canvas = document.querySelector('canvas')
         if (!document.fullscreenElement) {
@@ -17,7 +17,7 @@ window.addEventListener('keydown', (event) => {
         }
     }
 
-    // Space = pause/unpause
+    // Space = Pause/unpause
     if (event.key === ' ') {
         if (paused) {
             paused = false
