@@ -1,18 +1,11 @@
 audioPlayer = document.querySelector("#song");
 
-// COLORS
-// #808836
-// #FFBF00
-// #FF9A00
-// #D10363
 const SKIP_START = false;
 const GREEN = "#808836";
-const LIGHTER_GREEN = "#A0A840";
 const YELLOW = "#FFBF00";
 const ORANGE = "#FF9A00";
 const MAROON = "#D10363";
 const SCENES = [
-  //[myMetaballsScene, 100],
   [growingSunScene, 18],
   [myFlowerScene, 69],
   [myGardenScene, 45],
@@ -32,9 +25,7 @@ function sceneSwitcher(demoTime) {
       rotate(0);
       textAlign(LEFT, CENTER);
       textSize(64);
-      fill(0, 0, 0); // black
-      noStroke();
-      fill(0); // black
+      fill(0, 0, 0);
       noStroke();
       text(sceneTime.toFixed(2), -width / 2 + 30, -height / 2 + 50);
 
@@ -96,7 +87,7 @@ function instructionsScene2(sceneTime, realTime) {
       let metaball = new Metaball(
         random(width),
         random(height),
-        random(50, 200), // Adjusted radius range
+        random(50, 200) // Adjusted radius range
       );
       metaballs.push(metaball);
     }
@@ -146,13 +137,13 @@ function instructionsScene2(sceneTime, realTime) {
           x / d,
           y / d,
           gridSize * gridMultiplier,
-          gridSize * gridMultiplier,
+          gridSize * gridMultiplier
         );
         ellipse(
           x / d,
           y / d,
           gridSize * gridMultiplier,
-          gridSize * gridMultiplier,
+          gridSize * gridMultiplier
         ); // Draw small ellipses
       }
     }
@@ -242,7 +233,7 @@ function myFlowerScene(sceneTime) {
         rotate(sceneTime * rotationSpeed);
       } else {
         rotate(
-          sceneTime * rotationSpeed * mapEase(sceneTime, 15, 24, 1, 18, true),
+          sceneTime * rotationSpeed * mapEase(sceneTime, 15, 24, 1, 18, true)
         );
       }
 
@@ -307,7 +298,7 @@ function myFlowerScene(sceneTime) {
           60,
           petalWidth,
           petalWidth * 0.6,
-          true,
+          true
         );
       }
       if (color == 0 && sceneTime > 50) {
@@ -318,7 +309,7 @@ function myFlowerScene(sceneTime) {
           60,
           petalLength,
           petalLength * 1.5,
-          true,
+          true
         );
       }
 
@@ -340,7 +331,7 @@ function myFlowerScene(sceneTime) {
             petalWidth * 0.5,
             -petalLength,
             0,
-            -petalLength,
+            -petalLength
           );
           bezierVertex(
             -petalWidth * 0.5,
@@ -348,7 +339,7 @@ function myFlowerScene(sceneTime) {
             -petalWidth * 0.5,
             -petalLength * 0.5,
             0,
-            0,
+            0
           );
           endShape(CLOSE);
 
@@ -374,7 +365,7 @@ function myFlowerScene(sceneTime) {
       endFillTime + 10,
       0,
       1,
-      true,
+      true
     );
     fill(MAROON);
     noStroke();
@@ -387,7 +378,7 @@ function myFlowerScene(sceneTime) {
       endFillTime + 10,
       0,
       1,
-      true,
+      true
     );
     fill(MAROON);
     noStroke();
@@ -474,7 +465,7 @@ function myRainbowFlowerScene(sceneTime) {
           60,
           petalWidth,
           petalWidth * 0.8,
-          true,
+          true
         );
       }
       if (color == 0 && sceneTime > 50) {
@@ -484,7 +475,7 @@ function myRainbowFlowerScene(sceneTime) {
           60,
           petalLength,
           petalLength * 1.8,
-          true,
+          true
         );
       }
 
@@ -506,7 +497,7 @@ function myRainbowFlowerScene(sceneTime) {
             petalWidth * 0.5,
             -petalLength,
             0,
-            -petalLength,
+            -petalLength
           );
           bezierVertex(
             -petalWidth * 0.5,
@@ -514,7 +505,7 @@ function myRainbowFlowerScene(sceneTime) {
             -petalWidth * 0.5,
             -petalLength * 0.5,
             0,
-            0,
+            0
           );
           endShape(CLOSE);
 
@@ -541,7 +532,7 @@ function myRainbowFlowerScene(sceneTime) {
       endFillTime + 10,
       0,
       1,
-      true,
+      true
     );
     fill(GREEN); // Change end fill color
     noStroke();
@@ -554,7 +545,7 @@ function myRainbowFlowerScene(sceneTime) {
       endFillTime + 10,
       0,
       1,
-      true,
+      true
     );
     fill(GREEN);
     noStroke();
@@ -622,7 +613,7 @@ function drawSun(sunX, sunY, sunSize, sceneTime, sunIndex) {
         0,
         sunSize * 0.75 * extraWeight,
         sunSize * 0.5 * extraWeight,
-        1,
+        1
       );
 
       strokeWeight(weight);
@@ -656,7 +647,7 @@ function growingSunScene(sceneTime) {
     sunSecondaryY,
     sunSize * 0.4,
     sceneTime,
-    1,
+    1
   );
   drawSun(0, sunPrimaryY, sunSize, sceneTime, 2);
   drawSun(
@@ -664,7 +655,7 @@ function growingSunScene(sceneTime) {
     sunSecondaryY,
     sunSize * 0.4,
     sceneTime,
-    3,
+    3
   );
 
   // draw a circle that overtakes the scren after 16 seconds
@@ -760,7 +751,7 @@ function myGardenScene(sceneTime) {
         let d = dist(width / 2, height / 2, cur[0], cur[1]);
         return d < acc[1] ? [cur, d] : acc;
       },
-      [null, Infinity],
+      [null, Infinity]
     )[0];
     samples = samples.filter((s) => s != closest);
     samples.unshift(closest);
@@ -788,7 +779,7 @@ function myGardenScene(sceneTime) {
     let fadeFactor = constrain(
       map(sceneTime, flowerTime, flowerTime + 1, 0, 1, sceneTime),
       0,
-      1,
+      1
     );
 
     drawFlower(x, y, fadeFactor, sceneTime);
@@ -832,7 +823,7 @@ function drawFlower(x, y, fadeFactor, sceneTime) {
       cos(angle) * petalSize,
       sin(angle) * petalSize,
       petalSize * 2,
-      petalSize * 2,
+      petalSize * 2
     );
   }
 
