@@ -7,7 +7,7 @@ const ORANGE = "#FF9A00";
 const MAROON = "#D10363";
 const SCENES = [
   [growingSunScene, 18],
-  [myFlowerScene, 69],
+  [myFlowerScene, 70],
   [myGardenScene, 45],
   [myRainbowFlowerScene, 75],
 ];
@@ -27,8 +27,9 @@ function sceneSwitcher(demoTime) {
       textSize(64);
       fill(0, 0, 0);
       noStroke();
-      text(sceneTime.toFixed(2), -width / 2 + 30, -height / 2 + 50);
-
+      if (SKIP_START) {
+        text(sceneTime.toFixed(2), -width / 2 + 30, -height / 2 + 50);
+      }
       return;
     }
     elapsedTime += duration;
@@ -93,7 +94,7 @@ function instructionsScene2(sceneTime, realTime) {
     }
   }
 
-  let d = pixelDensity();
+  let d = 2;
   let pixelsW = width * d;
   let pixelsH = height * d;
 
@@ -118,7 +119,6 @@ function instructionsScene2(sceneTime, realTime) {
         // Is the x and y near the text?
         let textX = width;
         let textY = height;
-        let distanceToText = dist(x, y, textX, textY);
         if (
           x > textX - 1100 &&
           x < textX + 1100 &&
@@ -205,8 +205,8 @@ function myFlowerScene(sceneTime) {
   background(YELLOW); // background color
 
   // Calculate the zoom factor and pan offsets based on sceneTime
-  let zoom = map(sceneTime, 0, 60, 1, 1.4, true); // Zoom over time
-  let panX = 0; //map(sceneTime, 20, 60, 0, width, true); // Pan horizontally over time
+  let zoom = map(sceneTime, 0, 60, 1, 1.7, true); // Zoom over time
+  let panX = map(sceneTime, 0, 30, 0, 200, true); // Pan horizontally over time
   let panY = 0; //map(sceneTime, 10, 60, 0, height, true); // Pan vertically over time
 
   // Apply zoom and pan
@@ -223,8 +223,8 @@ function myFlowerScene(sceneTime) {
   fill(MAROON);
 
   // Draw flowers in a grid
-  for (let x = -width / 2; x <= width / 2; x += 100) {
-    for (let y = (-height * 2) / 2; y <= (height * 2) / 2; y += 100) {
+  for (let x = -width / 1.5; x <= width / 1.5; x += 100) {
+    for (let y = (-height * 2) / 1.5; y <= (height * 2) / 1.5; y += 100) {
       push();
       translate(x, y);
 
@@ -388,7 +388,11 @@ function myFlowerScene(sceneTime) {
   pop();
 }
 
+let starVisibility = {};
 function myRainbowFlowerScene(sceneTime) {
+  if (sceneTime === 0) {
+    starVisibility = {};
+  }
   strokeWeight(2);
   background(YELLOW); // Change background color to light blue
 
@@ -409,18 +413,18 @@ function myRainbowFlowerScene(sceneTime) {
   stroke(ORANGE); // Change stroke color to dark blue
   fill(ORANGE);
 
-  // Draw flowers in a grid
-  for (let x = -width / 2; x <= width / 2; x += 100) {
-    for (let y = (-height * 2) / 2; y <= (height * 2) / 2; y += 100) {
+  // Draw stars in a grid
+  for (let x = -width / 2; x <= width / 2; x += 110) {
+    for (let y = -height / 1.5; y <= height / 2; y += 110) {
       push();
       translate(x, y);
 
-      // Flower parameters
-      let petalLength = 50; // Increase petal length
-      let petalWidth = 25; // Increase petal width
-      let petalCount = 8; // Increase number of petals
+      // Star parameters
+      let starRadius = 50; // Star radius
+      let starInnerRadius = 25; // Star inner radius
+      let starPointCount = 8; // Number of star points
 
-      // Calculate petal reveal progress
+      // Calculate star reveal progress
       let noiseNumber = noise(x * 0.01, y * 0.01);
       let revealTimer = map(sceneTime, -5, 20, 0.2, 0.6, true);
       let revealTimer2;
@@ -431,14 +435,15 @@ function myRainbowFlowerScene(sceneTime) {
       }
       let revealProgress = 0;
       if (sceneTime > 2) {
-        revealProgress = 1 / petalCount;
+        revealProgress = 1 / starPointCount;
       }
       if (sceneTime > 6) {
         revealProgress = mapEase(sceneTime, 6, 20, 0, 1, true);
       }
-      if (revealProgress < 0.8) {
-        petalWidth += 8 * (sceneTime % 1); // Enhance pulsing effect
-      }
+      starInnerRadius += 8 * sin(sceneTime * 2 + 100 + x * 0.01);
+
+      // The stars should appear slowly when they are first introduced
+      starRadius *= map(sceneTime, 0, 10, 0, 1, true);
 
       // Distance to center for coordinated reveal
       let distanceToCenter = dist(x, y, 0, 0) / (width / 2);
@@ -459,65 +464,54 @@ function myRainbowFlowerScene(sceneTime) {
         }
       }
       if (color == 0 && sceneTime > 30) {
-        petalWidth = mapEase(
+        starInnerRadius = mapEase(
           sceneTime,
           30,
           60,
-          petalWidth,
-          petalWidth * 0.8,
+          starInnerRadius,
+          starInnerRadius * 0.8,
           true
         );
       }
       if (color == 0 && sceneTime > 50) {
-        petalLength = mapEase(
+        starRadius = mapEase(
           sceneTime,
           50,
           60,
-          petalLength,
-          petalLength * 1.8,
+          starRadius,
+          starRadius * 1.8,
           true
         );
       }
 
-      // Draw petals
-      for (let i = 0; i < petalCount; i++) {
-        let angle = (TWO_PI / petalCount) * i;
-
-        // Only draw petals up to the current reveal progress
-        if (i / petalCount < 1 && revealProgress != 0) {
-          push();
-          rotate(angle);
-
-          // Draw a petal using bezier curves
-          beginShape();
-          vertex(0, 0);
-          bezierVertex(
-            petalWidth * 0.5,
-            -petalLength * 0.5,
-            petalWidth * 0.5,
-            -petalLength,
-            0,
-            -petalLength
-          );
-          bezierVertex(
-            -petalWidth * 0.5,
-            -petalLength,
-            -petalWidth * 0.5,
-            -petalLength * 0.5,
-            0,
-            0
-          );
-          endShape(CLOSE);
-
-          pop();
+      if (revealProgress > 0) {
+        // Check starVisibility
+        let key = x + "," + y;
+        if (!starVisibility[key]) {
+          starVisibility[key] = sceneTime;
         }
+        // how long has it been?
+        let timeSinceVisible = sceneTime - starVisibility[key];
+        // slowly reveal the stars
+        starRadius *= mapEase(timeSinceVisible, 0, 1, 0, 1, true);
       }
 
-      // Draw flower center
-      let flowerCenter = mapEase(sceneTime, 0, 5, 0, 20, true); // Increase center size
+      // Draw star points
+      if (revealProgress > 0) {
+        beginShape();
+        for (let i = 0; i < starPointCount * 2; i++) {
+          let angle = (PI / starPointCount) * i;
+          let radius = i % 2 === 0 ? starRadius : starInnerRadius;
+          vertex(cos(angle) * radius, sin(angle) * radius);
+        }
+        endShape(CLOSE);
+      }
+
+      // Draw star center
+      let starCenter = mapEase(sceneTime, 0, 5, 0, 20, true); // Increase center size
       fill(GREEN); // Change center to white
       noStroke();
-      ellipse(0, 0, flowerCenter, flowerCenter); // Increase size
+      ellipse(0, 0, starCenter, starCenter); // Increase size
 
       pop();
     }
@@ -595,10 +589,6 @@ function drawSun(sunX, sunY, sunSize, sceneTime, sunIndex) {
     // Adjust stroke weight based on distance from the sun
     let d1 = dist(sunX, sunY, x1, y1); // distance for start point of the ray
     let d2 = dist(sunX, sunY, x2, y2); // distance for end point of the ray
-
-    // Map distance to stroke weight (thicker closer to the sun, thinner farther away)
-    let weight1 = map(d1, 0, sunSize * 0.75, 100, 1);
-    let weight2 = map(d2, 0, sunSize * 0.75, 100, 1);
 
     for (let j = 0; j < 1; j += 0.02) {
       x = bezierPoint(x1, controlX1, controlX2, x2, j);
@@ -741,7 +731,11 @@ function poissonDiskSampling(width, height, radius, maxAttempts) {
 
 let samples = [];
 
+let gardenVisibility = {};
 function myGardenScene(sceneTime) {
+  if (sceneTime === 0) {
+    gardenVisibility = {};
+  }
   if (samples.length === 0) {
     samples = poissonDiskSampling(width, height, 200);
     samples = samples.sort(() => Math.random() - 0.5);
@@ -781,15 +775,24 @@ function myGardenScene(sceneTime) {
       0,
       1
     );
+    let sizeFactor = 1.0;
+    // use gardenVisibility to pop the flowers
+    if (fadeFactor > 0) {
+      if (!gardenVisibility[i]) {
+        gardenVisibility[i] = sceneTime;
+      }
+      let timeSinceVisible = sceneTime - gardenVisibility[i];
+      fadeFactor = mapEase(timeSinceVisible, 0, 1, 0, 1, true);
+    }
 
-    drawFlower(x, y, fadeFactor, sceneTime);
+    drawFlower(x, y, fadeFactor, sceneTime, sizeFactor);
   }
 
   pop();
 }
 
 // Function to draw a flower at a specific position with scale and fade-in effect
-function drawFlower(x, y, fadeFactor, sceneTime) {
+function drawFlower(x, y, fadeFactor, sceneTime, sizeFactor) {
   push();
   translate(x, y);
   scale(fadeFactor); // Scale in-place
@@ -805,6 +808,7 @@ function drawFlower(x, y, fadeFactor, sceneTime) {
     //petalSize += 5 * (sceneTime % 1);
     petalSize += 10 * sin(sceneTime + 100 * noise(x, y));
   }
+  petalSize *= sizeFactor;
 
   // after 40, increase petalSize until it fills the screen
   let centerSize = 1;
