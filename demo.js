@@ -161,9 +161,9 @@ function instructionsScene2(sceneTime, realTime) {
 
   fill(YELLOW);
   // set fill color opacity to 0 when demoTime is greater than 0, easing
-  let fillOpacity = mapEase(sceneTime, 0, 0.5, 1, 0, true);
+  //let fillOpacity = mapEase(sceneTime, 0, 0.5, 1, 0, true);
   // using rgb(255, 191, 0)
-  fill(255, 191, 0, fillOpacity * 255);
+  //fill(255, 191, 0, fillOpacity * 255);
 
   // is fullscreen?
   if (!window.screenTop && !window.screenY) {
