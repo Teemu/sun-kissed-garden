@@ -10,6 +10,7 @@ A quick demo for [Graffathon 2024](https://graffathon.org) using [p5.js](https:/
 open index.html
 
 # Or for development:
+livereload .
 npx localtunnel --port 35729
 ```
 
